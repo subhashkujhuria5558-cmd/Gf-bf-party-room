@@ -101,6 +101,28 @@ socket.on('micToggled', ({ seatIndex, micOn }) => {
   console.log(`Seat ${seatIndex} mic state: ${micOn}`);
   // Update mic icon in UI
 });
+
+// ---------- Dragon Tiger Events ----------
+socket.on('bettingStatus', (status) => {
+  if (status === 'open') {
+    console.log('Betting opened');
+    // Show betting UI enabled
+  } else if (status === 'closed') {
+    console.log('Betting closed');
+    // Disable betting UI
+  }
+});
+
+socket.on('betPlaced', ({ userId, side, amount }) => {
+  console.log(`User ${userId} placed ${amount} on ${side}`);
+  // Show bet placed animation/info
+});
+
+socket.on('roundResult', ({ dragonCard, tigerCard, winner, payouts }) => {
+  console.log('Round Result:', dragonCard, tigerCard, winner, payouts);
+  // Show cards and winner animation
+  // Update user balance from payouts[userId]
+});
 // ==========================================================
 
 // Initialize user profile on page load

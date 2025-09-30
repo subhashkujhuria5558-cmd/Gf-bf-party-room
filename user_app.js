@@ -79,10 +79,12 @@ function logout() {
 // ================= SOCKET.IO CODE =================
 const socket = io('http://localhost:5000'); // backend URL बदल लेना
 
+// जब यूज़र कनेक्ट हो
 socket.on('connect', () => {
   console.log('Connected to server');
 });
 
+// ---------- Room Events ----------
 function joinRoom(roomId, userId) {
   socket.emit('joinRoom', { roomId, userId });
 }
@@ -98,9 +100,9 @@ socket.on('micToggled', ({ seatIndex, micOn }) => {
 // ---------- Dragon Tiger Events ----------
 socket.on('bettingStatus', (status) => {
   if (status === 'open') {
-    console.log('Betting opened');
+    console.log('Betting is now open');
   } else if (status === 'closed') {
-    console.log('Betting closed');
+    console.log('Betting is closed');
   }
 });
 
@@ -109,34 +111,31 @@ socket.on('betPlaced', ({ userId, side, amount }) => {
 });
 
 socket.on('roundResult', ({ dragonCard, tigerCard, winner, payouts }) => {
-  console.log('Round Result:', dragonCard, tigerCard, winner, payouts);
+  console.log('Round finished!');
+  console.log(`Dragon Card: ${dragonCard.rank}${dragonCard.suit}, Tiger Card: ${tigerCard.rank}${tigerCard.suit}`);
+  console.log('Winner:', winner);
+  console.log('Payouts:', payouts);
 });
-// ==========================================================
 
 // ---------- Fishing Events ----------
 socket.on('fishingStatus', (status) => {
   if (status === 'start') {
     console.log('Fishing started');
-    // Show fishing started UI & allow betting
   } else if (status === 'boss_appeared') {
     console.log('Boss fish appeared!');
-    // Show boss fish animation
   }
 });
 
 socket.on('fishBetPlaced', ({ userId, amount }) => {
   console.log(`User ${userId} placed fish bet: ${amount}`);
-  // Update bet amount on UI
 });
 
 socket.on('fishingRoundResult', ({ payouts, fishCaught }) => {
   console.log('Fishing round result:', payouts, fishCaught);
-  // Show results and payout info
 });
 
 socket.on('fishCaughtUpdate', (count) => {
   console.log('Fish caught count updated:', count);
-  // Update live fish caught count
 });
 // ==========================================================
 

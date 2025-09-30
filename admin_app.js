@@ -60,5 +60,30 @@ async function loadRooms() {
     contentArea.innerHTML = '<p>Room management coming soon...</p>';
 }
 
+// ================= SOCKET.IO CODE =================
+const socket = io('http://localhost:5000');
+
+// रूम अपडेट सुनें
+socket.on('roomUpdate', (room) => {
+  console.log('Admin room update', room);
+  // रूम मॉडरेशन UI अपडेट करें
+});
+
+// बेटिंग और गेम स्टेटस अपडेट
+socket.on('bettingStatus', (status) => {
+  console.log('Admin betting status:', status);
+});
+
+// बेट प्लेसमेंट नोटिफ़िकेशन
+socket.on('betPlaced', (bet) => {
+  console.log('Admin bet placed:', bet);
+});
+
+// अन्य जरूरी नोटिफ़िकेशन
+socket.on('roomFull', (roomId) => {
+  alert(`Room ${roomId} is full`);
+});
+// ==================================================
+
 // Initial load
 loadUsers();

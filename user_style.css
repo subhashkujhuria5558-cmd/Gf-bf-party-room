@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #eee;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #222;
+    color: #ffd700;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items: center;
+}
+
+nav {
+    background: #111;
+    display: flex;
+    gap: 10px;
+    padding: 10px 20px;
+}
+
+nav button {
+    background: #333;
+    border: none;
+    color: #eee;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+nav button:hover {
+    background: #555;
+}
+
+main {
+    padding: 20px;
+}
+
+#userInfo span {
+    margin-right: 20px;
+}

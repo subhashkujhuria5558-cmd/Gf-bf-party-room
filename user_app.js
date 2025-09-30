@@ -81,6 +81,28 @@ function logout() {
     window.location.reload();
 }
 
+// ================= SOCKET.IO CODE ADD KIA =================
+const socket = io('http://localhost:5000'); // backend URL adjust करें
+
+socket.on('connect', () => {
+  console.log('Connected to server');
+});
+
+function joinRoom(roomId, userId) {
+  socket.emit('joinRoom', { roomId, userId });
+}
+
+socket.on('roomUpdate', (room) => {
+  console.log('Room updated', room);
+  // Update UI here to show seats, mic status etc.
+});
+
+socket.on('micToggled', ({ seatIndex, micOn }) => {
+  console.log(`Seat ${seatIndex} mic state: ${micOn}`);
+  // Update mic icon in UI
+});
+// ==========================================================
+
 // Initialize user profile on page load
 loadUserProfile();
 loadHome();

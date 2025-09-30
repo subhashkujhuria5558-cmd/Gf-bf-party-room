@@ -19,7 +19,6 @@ async function fetchAuthAPI(endpoint) {
     const token = getToken();
     if (!token) {
         alert('You must login first!');
-        // Redirect to login page if implemented
         return null;
     }
     const res = await fetch(endpoint, {
@@ -27,7 +26,6 @@ async function fetchAuthAPI(endpoint) {
     });
     if (!res.ok) {
         alert('Error fetching data or session expired.');
-        // Redirect to login page if needed
         return null;
     }
     return await res.json();
@@ -63,17 +61,14 @@ async function loadGames() {
 
 async function loadWallet() {
     mainContent.innerHTML = '<h2>Wallet Info</h2><p>Balance and transaction history will be shown here.</p>';
-    // Fetch wallet info API implementation needed
 }
 
 async function loadGifts() {
     mainContent.innerHTML = '<h2>Your Gifts</h2><p>Gift sending and receiving interface coming soon.</p>';
-    // Implement gifting feature here
 }
 
 async function loadRooms() {
     mainContent.innerHTML = '<h2>Live Rooms</h2><p>Room list and join interface coming soon.</p>';
-    // Implement room list API call and UI rendering here
 }
 
 function logout() {
@@ -81,8 +76,8 @@ function logout() {
     window.location.reload();
 }
 
-// ================= SOCKET.IO CODE ADD KIA =================
-const socket = io('http://localhost:5000'); // backend URL adjust करें
+// ================= SOCKET.IO CODE =================
+const socket = io('http://localhost:5000'); // backend URL बदल लेना
 
 socket.on('connect', () => {
   console.log('Connected to server');
@@ -94,37 +89,57 @@ function joinRoom(roomId, userId) {
 
 socket.on('roomUpdate', (room) => {
   console.log('Room updated', room);
-  // Update UI here to show seats, mic status etc.
 });
 
 socket.on('micToggled', ({ seatIndex, micOn }) => {
   console.log(`Seat ${seatIndex} mic state: ${micOn}`);
-  // Update mic icon in UI
 });
 
 // ---------- Dragon Tiger Events ----------
 socket.on('bettingStatus', (status) => {
   if (status === 'open') {
     console.log('Betting opened');
-    // Show betting UI enabled
   } else if (status === 'closed') {
     console.log('Betting closed');
-    // Disable betting UI
   }
 });
 
 socket.on('betPlaced', ({ userId, side, amount }) => {
   console.log(`User ${userId} placed ${amount} on ${side}`);
-  // Show bet placed animation/info
 });
 
 socket.on('roundResult', ({ dragonCard, tigerCard, winner, payouts }) => {
   console.log('Round Result:', dragonCard, tigerCard, winner, payouts);
-  // Show cards and winner animation
-  // Update user balance from payouts[userId]
 });
 // ==========================================================
 
-// Initialize user profile on page load
+// ---------- Fishing Events ----------
+socket.on('fishingStatus', (status) => {
+  if (status === 'start') {
+    console.log('Fishing started');
+    // Show fishing started UI & allow betting
+  } else if (status === 'boss_appeared') {
+    console.log('Boss fish appeared!');
+    // Show boss fish animation
+  }
+});
+
+socket.on('fishBetPlaced', ({ userId, amount }) => {
+  console.log(`User ${userId} placed fish bet: ${amount}`);
+  // Update bet amount on UI
+});
+
+socket.on('fishingRoundResult', ({ payouts, fishCaught }) => {
+  console.log('Fishing round result:', payouts, fishCaught);
+  // Show results and payout info
+});
+
+socket.on('fishCaughtUpdate', (count) => {
+  console.log('Fish caught count updated:', count);
+  // Update live fish caught count
+});
+// ==========================================================
+
+// Initialize on page load
 loadUserProfile();
 loadHome();
